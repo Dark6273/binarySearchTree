@@ -1,12 +1,41 @@
 class TreeNode:
+    """TreeNode
+        create node
+    """
     def __init__(self, value: int, left=None, right=None):
+        """initialize
+            initialize node add set value
+        Args:
+            value (int): integer value
+            left (TreeNode, optional): set left child. Defaults to None.
+            right (TreeNode, optional): set right child. Defaults to None.
+        """
         self.value = value
         self.left = left
         self.right = right
         
     def printTree(self):
+        """print tree
+            print value child
+        """
         if self.left:
             self.left.printTree()
             print(self.value)
         if self.right:
             self.right.printTree()
+    
+    def addLeftChild(self, value: int):
+        """add left child
+
+        Args:
+            value (int): integer value
+        """
+        self.left = TreeNode(value)
+    
+    def addRightChild(self, value: int):
+        """add right chile
+
+        Args:
+            value (int): integer value
+        """
+        self.right = TreeNode(value)

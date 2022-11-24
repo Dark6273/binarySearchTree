@@ -1,7 +1,17 @@
 from module.tree import Tree
 
 
-def compareTwoTree(tree1, tree2):
+def compareTwoTree(tree1: Tree, tree2: Tree):
+    """compare two tree
+        Comparison of two binary trees
+
+    Args:
+        tree1 (Tree): tree for get all node and compare with another tree node
+        tree2 (Tree): tree for get all node and compare with another tree node
+        
+    Return:
+        boolean: The sameness of two trees
+    """
     def compareTwoNode(node1, node2):
         if node1.value == node2.value:
             if node1.left != None and node2.left != None:
@@ -30,7 +40,9 @@ def main():
     #         break
     #     numbers.append(number)
     
-    numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13, 14, 15, 16, 17, 18]
+    numbers = []
+    for i in range(1, 30):
+        numbers.append(i)
     
     tree = Tree(numbers)
     tree.drawGraphicalTree()
