@@ -113,7 +113,7 @@ class Tree:
         screen = Screen()
         screen.setup(1024, 700)
         self._jumpTo(0, 250)
-        self.turtle.write("Graphical binary tree - Mahdi Khosravi, 40007583 :)", align="center", font=('Arial', 17, "bold"))
+        self.turtle.write("Graphical Binary Tree - Mahdi Khosravi, 40007583 :)", align="center", font=('Arial', 17, "bold"))
         self.turtle.speed(0)
         h = self._height(self.root)
         self._jumpTo(0, 30*h)
