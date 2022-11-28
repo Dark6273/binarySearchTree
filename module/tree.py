@@ -25,7 +25,7 @@ class Tree:
         pointer pointing to the left and right node respectively.
     """
     
-    def __init__(self, data: list):
+    def __init__(self, data: list or TreeNode):
         """__init__
             initialize data and create nodes
 
@@ -33,7 +33,13 @@ class Tree:
             data (list): list of numbers for create a child
         """
         self.data = data
-        self.root = self._branching(data)
+        if type(data) == list:
+            self.root = self._branching(data)
+        elif type(data) == TreeNode:
+            self.root = data
+        else:
+            print("wrong input type -> allowed types (list[numbers], TreeNode), entered type -> {}".format(type(data)))
+            exit(-1)
         
         
     def _branching(self, data):
@@ -122,13 +128,26 @@ class Tree:
         mainloop()
     
     
+    def _countOfNodes(self, node, counter=0):
+        """count of nodes
+
+        Returns:
+            int: count of nodes
+        """
+        if node:
+            counter += 1
+            counter = self._countOfNodes(node.right, counter)
+            counter = self._countOfNodes(node.left, counter)
+        return counter
+    
+    
     def countOfNodes(self):
         """count of nodes
 
         Returns:
             int: count of nodes
         """
-        return len(self.data)
+        return self._countOfNodes(self.root)
     
     
     def getHeight(self):
@@ -216,6 +235,15 @@ class Tree:
         self.data = None
         
         
+    def _maximum(self, node, max):
+        if node:
+            if node.value > max:
+                max = node.value
+            max = self._maximum(node.right, max)
+            max = self._maximum(node.left, max)
+        return max
+        
+        
     def maximum(self):
         """maximum
             Calculate maximum number in binary tree
@@ -223,7 +251,16 @@ class Tree:
         Returns:
             int: maximum value
         """
-        return max(self.data)
+        return self._maximum(self.root, self.root.value)
+
+
+    def _minimum(self, node, min):
+        if node:
+            if node.value < min:
+                min = node.value
+            min = self._minimum(node.right, min)
+            min = self._minimum(node.left, min)
+        return min
 
 
     def minimum(self):
@@ -233,7 +270,7 @@ class Tree:
         Returns:
             int: minimum value
         """
-        return min(self.data)
+        return self._minimum(self.root, self.root.value)
     
     
     def _inOrderTraversal(self, status: int, size: int ,node: TreeNode):
@@ -319,13 +356,6 @@ class Tree:
             boolean: Is it complete or not?
         """
         return self._check(self.root)
-    
-    
-    def drawCommandLine(self):
-        """draw command line -> CLI
-            Display data of all nodes
-        """
-        self.root.printTree()
         
 
     def _compareTwoNode(self, node1: TreeNode, node2: TreeNode):

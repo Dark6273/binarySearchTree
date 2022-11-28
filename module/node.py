@@ -31,6 +31,7 @@ class TreeNode:
             value (int): integer value
         """
         self.left = TreeNode(value)
+        return self.left
     
     def addRightChild(self, value: int):
         """add right chile
@@ -39,3 +40,5 @@ class TreeNode:
             value (int): integer value
         """
         self.right = TreeNode(value)
+        return self.right
+        
