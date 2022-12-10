@@ -1,5 +1,5 @@
 from module.tree import Tree
-from module.node import TreeNode
+from random import randint
 
 
 def compareTwoTree(tree1: Tree, tree2: Tree):
@@ -46,26 +46,17 @@ def main():
     # tree.drawGraphicalTree()
     
     # ** second method **
-    # numbers = []
-    # for i in range(1, 30):
-    #     numbers.append(i)
+    numbers = []
+    for i in range(1, 20):
+        numbers.append(randint(0, 100))
     
-    # tree1 = Tree(numbers)
+    tree1 = Tree(numbers)
+    print(tree1.getCountOfLeaf())
     # tree1.drawGraphicalTree()
-    
-    # ** third method **
-    root = TreeNode(5)
-    rR = root.addRightChild(2)
-    lR = root.addLeftChild(3)
-    lR.addLeftChild(2)
-    lR.addRightChild(8)
-    rR.addRightChild(6)
-    rR.addLeftChild(16)
-    
-    tree = Tree(root)
-    tree.drawGraphicalTree()
-    
+    tree1.traversal("pre order")
+    print()
+    tree1.traversal("pre order", recursive=False)
 
-    
+
 if __name__ == '__main__':
     main()

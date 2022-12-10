@@ -2,7 +2,7 @@ class TreeNode:
     """TreeNode
         create node
     """
-    def __init__(self, value: int, left=None, right=None):
+    def __init__(self, value: int, left=None, right=None) -> None:
         """initialize
             initialize node add set value
         Args:
@@ -13,16 +13,6 @@ class TreeNode:
         self.value = value
         self.left = left
         self.right = right
-        
-    def printTree(self):
-        """print tree
-            print value child
-        """
-        if self.left:
-            self.left.printTree()
-            print(self.value)
-        if self.right:
-            self.right.printTree()
     
     def addLeftChild(self, value: int):
         """add left child
@@ -41,4 +31,7 @@ class TreeNode:
         """
         self.right = TreeNode(value)
         return self.right
+
+    def __repr__(self):
+        return "value of node equals by -> " + str(self.value)
         

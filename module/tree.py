@@ -16,6 +16,7 @@ from module.node import TreeNode
         11- compare two tree
 """
 
+
 class Tree:
     """binary tree class
         A binary tree is a data structure in which each node 
@@ -24,8 +25,8 @@ class Tree:
         node 1 contains two pointers, i.e., left and a right 
         pointer pointing to the left and right node respectively.
     """
-    
-    def __init__(self, data: list or TreeNode):
+
+    def __init__(self, data: list or TreeNode) -> None:
         """__init__
             initialize data and create nodes
 
@@ -33,16 +34,17 @@ class Tree:
             data (list): list of numbers for create a child
         """
         self.data = data
+        self.root = None
         if type(data) == list:
-            self.root = self._branching(data)
+            for number in data:
+                self._branching(self.root, number)
         elif type(data) == TreeNode:
             self.root = data
         else:
             print("wrong input type -> allowed types (list[numbers], TreeNode), entered type -> {}".format(type(data)))
             exit(-1)
-        
-        
-    def _branching(self, data):
+
+    def _branching(self, node: TreeNode, data: int) -> None:
         """_branching
             Calculation of the children of each branch
         Args:
@@ -50,25 +52,24 @@ class Tree:
         Returns:
             root (TreeNode): main branch
         """
-        if len(data) == 0:
-            return None
-        
-        nodes = [TreeNode(node) for node in data]
-        
-        branches = nodes[::-1]
-        root = branches.pop()
-        
-        for node in nodes:
-            if branches == []:
-                break
-            if node:
-                if branches: node.left  = branches.pop()
-                if branches: node.right = branches.pop()
-                
-        return root
-    
-    
-    def _jumpTo(self, x: int, y: int):
+        if self.root == None:
+            self.root = TreeNode(data)
+        else:
+            if node.value > data:
+                if node.left != None:
+                    self._branching(node.left, data)
+                else:
+                    node.addLeftChild(data)
+            elif node.value < data:
+                if node.right != None:
+                    self._branching(node.right, data)
+                else:
+                    node.addRightChild(data)
+            elif node.value == data:
+                print("you can't insert duplicate value")
+                return -1
+
+    def _jumpTo(self, x: int, y: int) -> None:
         """_jumpTo
             Moving the pen and placing it in the right place 
 
@@ -79,9 +80,8 @@ class Tree:
         self.turtle.penup()
         self.turtle.goto(x, y)
         self.turtle.pendown()
-        
-        
-    def _draw(self, node: TreeNode, x: int, y: int, move: int):
+
+    def _draw(self, node: TreeNode, x: int, y: int, move: int) -> None:
         """_draw
             Drawing a connecting line between the children and drawing 
             a circle and writing its value
@@ -94,41 +94,40 @@ class Tree:
         """
         if node:
             self.turtle.goto(x, y)
-            self._jumpTo(x, y-20)
+            self._jumpTo(x, y - 20)
             self.turtle.begin_fill()
             self.turtle.circle(12)
             self.turtle.end_fill()
             self.turtle.color('white')
             self.turtle.write(node.value, align='center', font=('Arial', 11, 'bold'))
             self.turtle.color('black')
-            self._draw(node.left, x-move, y-60, move/2)
-            self._jumpTo(x, y-20)
-            self._draw(node.right, x+move, y-60, move/2)
-                
-                
-    def drawGraphicalTree(self):
+            self._draw(node.left, x - move, y - 60, move / 2)
+            self._jumpTo(x, y - 20)
+            self._draw(node.right, x + move, y - 60, move / 2)
+
+    def drawGraphicalTree(self) -> None:
         """draw graphical tree
             create turtle page
             set title and page size
             write name of author
             run until close page
         """
-        
+
         self.turtle = Turtle()
         title("Graphical binary tree")
         screen = Screen()
         screen.setup(1024, 700)
         self._jumpTo(0, 250)
-        self.turtle.write("Graphical Binary Tree - Mahdi Khosravi, 40007583 :)", align="center", font=('Arial', 17, "bold"))
+        self.turtle.write("Graphical Binary Tree - Mahdi Khosravi, 40007583 :)", align="center",
+                          font=('Arial', 17, "bold"))
         self.turtle.speed(0)
         h = self._height(self.root)
-        self._jumpTo(0, 30*h)
-        self._draw(self.root, 0, 30*h, 40*h)
+        self._jumpTo(0, 30 * h)
+        self._draw(self.root, 0, 30 * h, 40 * h)
         self.turtle.hideturtle()
         mainloop()
-    
-    
-    def _countOfNodes(self, node, counter=0):
+
+    def _countOfNodes(self, node, counter=0) -> int:
         """count of nodes
 
         Returns:
@@ -139,27 +138,24 @@ class Tree:
             counter = self._countOfNodes(node.right, counter)
             counter = self._countOfNodes(node.left, counter)
         return counter
-    
-    
-    def countOfNodes(self):
+
+    def countOfNodes(self) -> int:
         """count of nodes
 
         Returns:
             int: count of nodes
         """
         return self._countOfNodes(self.root)
-    
-    
-    def getHeight(self):
+
+    def getHeight(self) -> int:
         """get height
         
         Returns:
             int: height size
         """
         return self._height(self.root)
-    
-    
-    def _height(self, root: TreeNode):
+
+    def _height(self, root: TreeNode) -> int:
         """_height
             Recursive calculation of tree binary height
 
@@ -170,22 +166,20 @@ class Tree:
             int: height size
         """
         if root is None:
-            return 0 
+            return 0
         left = self._height(root.left)
         right = self._height(root.right)
         return max(left, right) + 1
-    
-    
-    def getCountOfChild(self):
+
+    def getCountOfChild(self) -> int:
         """get count of children
 
         Returns:
             int: Number of children
         """
         return self._countOfChild(self.root)
-    
-    
-    def _countOfChild(self, node: TreeNode):
+
+    def _countOfChild(self, node: TreeNode) -> int:
         """_countOfChild
             Calculate the number of tree children recursively
             
@@ -198,18 +192,16 @@ class Tree:
         if (node == None):
             return 0;
         return (1 + self._countOfChild(node.left) + self._countOfChild(node.right))
-    
-    
-    def getCountOfLeaf(self):
+
+    def getCountOfLeaf(self) -> int:
         """get count of leaf
 
         Returns:
             int: number of leaf
         """
         return self._countOfLeaf(self.root)
-    
-    
-    def _countOfLeaf(self, node: TreeNode):
+
+    def _countOfLeaf(self, node: TreeNode) -> int:
         """_countOfLeaf
             Calculating the number of tree leaves recursively
 
@@ -220,31 +212,31 @@ class Tree:
             int: number of leaf
         """
         if node is None:
-            return 0 
-        if(node.left is None and node.right is None):
-            return 1 
+            return 0
+        if (node.left is None and node.right is None):
+            return 1
         else:
             return self._countOfLeaf(node.left) + self._countOfLeaf(node.right)
-    
-    
-    def removeAllNodes(self):
+
+    def removeAllNodes(self) -> bool:
         """remove all nodes
             Remove the original node
         """
         self.root = None
         self.data = None
-        
-        
-    def _maximum(self, node, max):
+        return True
+
+    def _maximum(self, node: TreeNode, max: int) -> int:
         if node:
             if node.value > max:
                 max = node.value
-            max = self._maximum(node.right, max)
-            max = self._maximum(node.left, max)
+            if node.right != None:
+                max = self._maximum(node.right, max)
+            else:
+                max = self._maximum(node.left, max)
         return max
-        
-        
-    def maximum(self):
+
+    def maximum(self) -> int:
         """maximum
             Calculate maximum number in binary tree
 
@@ -253,17 +245,17 @@ class Tree:
         """
         return self._maximum(self.root, self.root.value)
 
-
-    def _minimum(self, node, min):
+    def _minimum(self, node: TreeNode, min: int) -> int:
         if node:
             if node.value < min:
                 min = node.value
-            min = self._minimum(node.right, min)
-            min = self._minimum(node.left, min)
+            if node.left != None:
+                min = self._minimum(node.left, min)
+            else:
+                min = self._minimum(node.right, min)
         return min
 
-
-    def minimum(self):
+    def minimum(self) -> int:
         """minimum
             Calculate minimum number in binary tree
 
@@ -271,9 +263,8 @@ class Tree:
             int: minimum value
         """
         return self._minimum(self.root, self.root.value)
-    
-    
-    def _inOrderTraversal(self, status: int, size: int ,node: TreeNode):
+
+    def _inOrderTraversal(self, status: int, size: int, node: TreeNode) -> None:
         """_inOrderTraversal
             Check for navigability
 
@@ -285,14 +276,13 @@ class Tree:
         if (node == None):
             return;
 
-        self._inOrderTraversal(status, 2*size + 1,node.left);
+        self._inOrderTraversal(status, 2 * size + 1, node.left);
 
         status[size] = 1;
 
-        self._inOrderTraversal(status, 2*size + 2,node.right);
-    
-    
-    def _check(self, node: TreeNode):
+        self._inOrderTraversal(status, 2 * size + 2, node.right);
+
+    def _check(self, node: TreeNode) -> bool:
         """_check
             Checking the completeness of the tree
 
@@ -304,18 +294,17 @@ class Tree:
         """
         if (node == None):
             return True
-        
+
         status = [0 for i in range(0, self.getCountOfChild())]
 
         self._inOrderTraversal(status, 0, node);
 
         for i in range(0, self.getCountOfChild()):
-            if(status[i] == 0):
+            if (status[i] == 0):
                 return False
         return True
-    
-    
-    def _search(self, node: TreeNode, key: int):
+
+    def _search(self, node: TreeNode, key: int) -> TreeNode:
         """_search
             Checking for the existence of this particular value in the tree
 
@@ -328,14 +317,13 @@ class Tree:
         """
         if node is None or node.value == key:
             return node
-        
-        if node.left != None:
+
+        if node.value > key:
             return self._search(node.left, key)
-        if node.right != None:
+        elif node.value < key:
             return self._search(node.right, key)
-    
-    
-    def search(self, key: int):
+
+    def search(self, key: int) -> TreeNode:
         """search
             Checking for the existence of this particular value in the tree
             
@@ -346,9 +334,8 @@ class Tree:
             TreeNode: The carrier node of the desired value
         """
         return self._search(self.root, key)
-    
-    
-    def checkCompleteTree(self):
+
+    def checkCompleteTree(self) -> bool:
         """check complete tree
             Checking the completeness of the tree
 
@@ -356,9 +343,8 @@ class Tree:
             boolean: Is it complete or not?
         """
         return self._check(self.root)
-        
 
-    def _compareTwoNode(self, node1: TreeNode, node2: TreeNode):
+    def _compareTwoNode(self, node1: TreeNode, node2: TreeNode) -> bool:
         """_compareTwoNode
             Checking the existence of two nodes and their amount
 
@@ -374,17 +360,16 @@ class Tree:
                 self._compareTwoNode(node1.left, node2.right)
             if node1.right != None and node2.right != None:
                 self._compareTwoNode(node1.right, node2.right)
-            if (node1.right != None and node2.right == None) or (node1.right == None and node2.right != None): 
+            if (node1.right != None and node2.right == None) or (node1.right == None and node2.right != None):
                 return False
-            if (node1.left != None and node2.left == None) or (node1.left == None and node2.left != None): 
+            if (node1.left != None and node2.left == None) or (node1.left == None and node2.left != None):
                 return False
-            
+
             return True
         else:
             return False
-    
-    
-    def compareWithTree(self, tree: TreeNode):
+
+    def compareWithTree(self, tree: TreeNode) -> bool:
         """compare with another tree
 
         Args:
@@ -393,10 +378,9 @@ class Tree:
         Returns:
             boolean: Comparison with another tree
         """
-        return self._compareTwoNode(self.root,tree.root)
-    
-    
-    def _levelOrder(self):
+        return self._compareTwoNode(self.root, tree.root)
+
+    def _levelOrder(self) -> None:
         """_levelOrder
             Level by level display of tree branches
             
@@ -408,9 +392,8 @@ class Tree:
         height = self._height(self.root)
         for i in range(1, height + 1):
             self._printCurrentLevel(self.root, i)
-    
-    
-    def _printCurrentLevel(self, root: TreeNode, level: int):
+
+    def _printCurrentLevel(self, root: TreeNode, level: int) -> None:
         """_printCurrentLevel
             Show all children level
             
@@ -423,11 +406,10 @@ class Tree:
         if level == 1:
             print(root.value, end=", ")
         elif level > 1:
-            self._printCurrentLevel(root.left, level-1)
-            self._printCurrentLevel(root.right, level-1)
-    
-    
-    def _postOrder(self, node: TreeNode):
+            self._printCurrentLevel(root.left, level - 1)
+            self._printCurrentLevel(root.right, level - 1)
+
+    def _postOrder(self, node: TreeNode) -> None:
         """_postOrder
             In post order traversal, the tree is traversed in this way: 
             left, right, root. The algorithm approach is to use the 
@@ -443,10 +425,9 @@ class Tree:
             self._postOrder(node.left)
             self._postOrder(node.right)
             print(node.value, end=", ")
-    
-    
-    def _inOrder(self, node: TreeNode):
-        """_inOrder
+
+    def _inOrderRecursion(self, node: TreeNode) -> None:
+        """_inOrderRecursion
             In order tree traversal is a way of traversing a binary 
             search tree in non-decreasing order. To get nodes of 
             BST in non-increasing order, a variation of InOrder 
@@ -456,13 +437,34 @@ class Tree:
             node (TreeNode): node for show value
         """
         if node != None:
-            self._inOrder(node.left)
+            self._inOrderRecursion(node.left)
             print(node.value, end=", ")
-            self._inOrder(node.right)
-        
-        
-    def _preOrder(self, node: TreeNode):
-        """_preOrder
+            self._inOrderRecursion(node.right)
+
+    def _inOrder(self) -> None:
+        """_inOrder
+            In order tree traversal is a way of traversing a binary
+            search tree in non-decreasing order. To get nodes of
+            BST in non-increasing order, a variation of InOrder
+            traversal where InOrder traversal is reversed can be used.
+        """
+        numbers = list()
+
+        node = self.root
+
+        while True:
+            if node is not None:
+                numbers.append(node)
+                node = node.left
+            elif numbers:
+                node = numbers.pop()
+                print(node.value, end=", ")
+                node = node.right
+            else:
+                break
+
+    def _preOrder(self, node: TreeNode) -> None:
+        """_preOrderRecursion
             PreOrder tree traversal is a depth-first tree traversal algorithm. 
             In depth-first traversal, we start at the root node and then we 
             explore a branch of the tree till the end and then we backtrack 
@@ -480,10 +482,9 @@ class Tree:
             print(node.value, end=", ")
             self._preOrder(node.left)
             self._preOrder(node.right)
-    
-    
-    def navigation(self, kind: str):
-        """navigation
+
+    def traversal(self, kind: str, recursive: bool = True) -> None:
+        """traversal
             There are three common ways to traverse a tree in 
             depth-first order: in-order, pre-order, and post-order. 
 
@@ -496,10 +497,9 @@ class Tree:
         elif kind == "post order" or kind == "postorder" or kind == "post_order":
             self._postOrder(self.root)
         elif kind == "in order" or kind == "inorder" or kind == "in_order":
-            self._inOrder(self.root)
+            self._inOrderRecursion(self.root) if recursive else self._inOrder()
         elif kind == "pre order" or kind == "preorder" or kind == "preOrder":
             self._preOrder(self.root)
         else:
             print("Unknown type - navigation")
             exit(-1)
-        
