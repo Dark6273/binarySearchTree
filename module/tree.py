@@ -69,6 +69,12 @@ class Tree:
                 print("you can't insert duplicate value")
                 return -1
 
+
+    def insert(self, value: int) -> None:
+        if self._branching(self.root, value) != -1:
+            return False
+        return True
+
     def _jumpTo(self, x: int, y: int) -> None:
         """_jumpTo
             Moving the pen and placing it in the right place 
@@ -355,19 +361,14 @@ class Tree:
         Returns:
             boolean: Comparison of two node
         """
-        if node1.value == node2.value:
-            if node1.left != None and node2.left != None:
-                self._compareTwoNode(node1.left, node2.right)
-            if node1.right != None and node2.right != None:
-                self._compareTwoNode(node1.right, node2.right)
-            if (node1.right != None and node2.right == None) or (node1.right == None and node2.right != None):
-                return False
-            if (node1.left != None and node2.left == None) or (node1.left == None and node2.left != None):
-                return False
-
+        if node1 == None and node2 == None:
             return True
-        else:
+        if node1 == None or node2 == None:
             return False
+
+        if self._compareTwoNode(node1.right, node2.right) and self._compareTwoNode(node1.left, node2.left) and node2.value == node1.value:
+            return True
+        return False
 
     def compareWithTree(self, tree: TreeNode) -> bool:
         """compare with another tree
@@ -491,15 +492,15 @@ class Tree:
         Args:
             kind (str): Specify the type of navigation
         """
-        kind = kind.lower()
-        if kind == "level order" or kind == "levelorder" or kind == "level_order":
+        if kind == "level order" or kind == "levelorder" or kind == "level_order" or kind == 1:
             self._levelOrder()
-        elif kind == "post order" or kind == "postorder" or kind == "post_order":
+        elif kind == "post order" or kind == "postorder" or kind == "post_order" or kind == 2:
             self._postOrder(self.root)
-        elif kind == "in order" or kind == "inorder" or kind == "in_order":
+        elif kind == "in order" or kind == "inorder" or kind == "in_order" or kind == 3:
             self._inOrderRecursion(self.root) if recursive else self._inOrder()
-        elif kind == "pre order" or kind == "preorder" or kind == "preOrder":
+        elif kind == "pre order" or kind == "preorder" or kind == "preOrder" or kind == 4:
             self._preOrder(self.root)
         else:
             print("Unknown type - navigation")
             exit(-1)
+        print()
