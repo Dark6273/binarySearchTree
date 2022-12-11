@@ -301,13 +301,11 @@ class Tree:
         if (node == None):
             return True
 
-        status = [0 for i in range(0, self.getCountOfChild())]
-
-        self._inOrderTraversal(status, 0, node);
-
-        for i in range(0, self.getCountOfChild()):
-            if (status[i] == 0):
-                return False
+        if (node.right == None and node.left != None) or (node.left == None and node.right != None):
+            return False
+        if node.left != None:
+            return self._check(node.left)
+            return self._check(node.right)
         return True
 
     def _search(self, node: TreeNode, key: int) -> TreeNode:

@@ -195,7 +195,6 @@ def selection():
                 showResult("wrong input")
 
 
-
 def main():
     selection()
 
