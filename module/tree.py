@@ -288,7 +288,7 @@ class Tree:
 
         self._inOrderTraversal(status, 2 * size + 2, node.right);
 
-    def _check(self, node: TreeNode) -> bool:
+    def _checkFullTree(self, node: TreeNode) -> bool:
         """_check
             Checking the completeness of the tree
 
@@ -298,14 +298,19 @@ class Tree:
         Returns:
             boolean: Is it complete or not?
         """
-        if (node == None):
-            return True
+        queue = list()
+        queue.append(node)
 
-        if (node.right == None and node.left != None) or (node.left == None and node.right != None):
-            return False
-        if node.left != None:
-            return self._check(node.left)
-            return self._check(node.right)
+        while queue != []:
+            temp = queue.pop()
+
+            if temp.left == None and temp.right == None:
+                continue
+            elif temp.right != None and temp.left != None:
+                queue.append(temp.right)
+                queue.append(temp.left)
+            else:
+                return False
         return True
 
     def _search(self, node: TreeNode, key: int) -> TreeNode:
@@ -339,14 +344,24 @@ class Tree:
         """
         return self._search(self.root, key)
 
-    def checkCompleteTree(self) -> bool:
+    def checkFullTree(self) -> bool:
         """check complete tree
             Checking the completeness of the tree
 
         Returns:
             boolean: Is it complete or not?
         """
-        return self._check(self.root)
+        return self._checkFullTree(self.root)
+
+    def _isComplete(self, node: TreeNode, index: int, nodeCount: int) -> bool:
+        if node == None:
+            return True
+        if index >= nodeCount:
+            return False
+        return self._isComplete(node.left, 2 * index + 1, nodeCount) and self._isComplete(node.right, 2 * index + 2, nodeCount)
+
+    def isComplete(self):
+        return self._isComplete(self.root, 0, self.countOfNodes())
 
     def _compareTwoNode(self, node1: TreeNode, node2: TreeNode) -> bool:
         """_compareTwoNode

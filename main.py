@@ -89,7 +89,7 @@ def show():
     sleep(0.03)
     print(Fore.LIGHTGREEN_EX + " [4]" + Fore.WHITE + " Get height")
     sleep(0.03)
-    print(Fore.LIGHTGREEN_EX + " [5]" + Fore.WHITE + " Count of Chiled")
+    print(Fore.LIGHTGREEN_EX + " [5]" + Fore.WHITE + " Count of Chiledren")
     sleep(0.03)
     print(Fore.LIGHTGREEN_EX + " [6]" + Fore.WHITE + " Count of leaf")
     sleep(0.03)
@@ -97,17 +97,19 @@ def show():
     sleep(0.03)
     print(Fore.LIGHTGREEN_EX + " [8]" + Fore.WHITE + " Traversal")
     sleep(0.03)
-    print(Fore.LIGHTGREEN_EX + " [9]" + Fore.WHITE + " Compelete tree")
+    print(Fore.LIGHTGREEN_EX + " [9]" + Fore.WHITE + " full tree")
     sleep(0.03)
-    print(Fore.LIGHTGREEN_EX + " [10]" + Fore.WHITE + " Search")
+    print(Fore.LIGHTGREEN_EX + " [10]" + Fore.WHITE + " complete tree")
     sleep(0.03)
-    print(Fore.LIGHTGREEN_EX + " [11]" + Fore.WHITE + " Compare two tree")
+    print(Fore.LIGHTGREEN_EX + " [11]" + Fore.WHITE + " Search")
     sleep(0.03)
-    print(Fore.LIGHTGREEN_EX + " [12]" + Fore.WHITE + " Maximum and minimum")
+    print(Fore.LIGHTGREEN_EX + " [12]" + Fore.WHITE + " Compare two tree")
     sleep(0.03)
-    print(Fore.LIGHTGREEN_EX + " [13]" + Fore.WHITE + " Add new node")
+    print(Fore.LIGHTGREEN_EX + " [13]" + Fore.WHITE + " Maximum and minimum")
     sleep(0.03)
-    print(Fore.RED + " [14]" + Fore.WHITE + " exit")
+    print(Fore.LIGHTGREEN_EX + " [14]" + Fore.WHITE + " Add new node")
+    sleep(0.03)
+    print(Fore.RED + " [15]" + Fore.WHITE + " exit")
     sleep(0.03)  # 0.03s sleep
     try:
         return int(input(Fore.RED + "\n ┌─[" + Fore.GREEN + ">> " + Fore.WHITE + f"Binary Search Tree " + Fore.GREEN + "<<" + Fore.RED + "]\n └──╼ [" + Fore.WHITE + "#" + Fore.RED + "] " + Fore.RESET))
@@ -150,7 +152,7 @@ def selection():
                 status = False
             trees.append(createTree(status))
             showResult("create tree successfully!")
-        elif select == 14:
+        elif select == 15:
             showResult("Good Bye")
             exit(-1)
         else:
@@ -176,19 +178,21 @@ def selection():
                 trees[treeNumber].traversal(traversal())
                 sleep(5)
             elif select == 9:
-                showResult("tree is compelte: " + str(trees[treeNumber].checkCompleteTree()))
+                showResult("tree is full: " + str(trees[treeNumber].checkFullTree()))
             elif select == 10:
+                showResult("tree is compelte: " + str(trees[treeNumber].isComplete()))
+            elif select == 11:
                 search = int(selectInput("enter of value node"))
                 showResult(str(trees[treeNumber].search(search)))
-            elif select == 11:
+            elif select == 12:
                 otherTreeNumber = int(selectInput("enter number of other tree"))
                 showResult("Compare two tree is: " + str(trees[treeNumber].compareWithTree(trees[otherTreeNumber])))
-            elif select == 12:
+            elif select == 13:
                 if selectInput("maximum -> 1 and minimum -> 2").lower() == "1":
                     showResult("Maximum value: " + str(trees[treeNumber].maximum()))
                 else:
                     showResult("Minimum value: " + str(trees[treeNumber].minimum()))
-            elif select == 13:
+            elif select == 14:
                 trees[treeNumber].insert(int(selectInput("enter value of new node ")))
                 showResult("add new node successfully!")
             else:
