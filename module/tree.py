@@ -1,20 +1,5 @@
-from turtle import Turtle, mainloop, title, Screen
+from turtle import Turtle, mainloop, title, Screen, bye
 from module.node import TreeNode
-
-"""binary tree
-    Binary tree with methods
-        1- graphical show
-        2- count of nodes
-        3- height
-        4- count of child
-        5- count of leaf
-        6- remove all nodes
-        7- maximum and minimum
-        8- navigation -> (1- level order, 2- in order, 3- post order, 4- pre order)
-        9- complete tree -> boolean result
-        10- search
-        11- compare two tree
-"""
 
 
 class Tree:
@@ -68,7 +53,6 @@ class Tree:
             elif node.value == data:
                 print("you can't insert duplicate value")
                 return -1
-
 
     def insert(self, value: int) -> None:
         if self._branching(self.root, value) != -1:
@@ -131,19 +115,11 @@ class Tree:
         self._jumpTo(0, 30 * h)
         self._draw(self.root, 0, 30 * h, 40 * h)
         self.turtle.hideturtle()
-        mainloop()
-
-    def _countOfNodes(self, node, counter=0) -> int:
-        """count of nodes
-
-        Returns:
-            int: count of nodes
-        """
-        if node:
-            counter += 1
-            counter = self._countOfNodes(node.right, counter)
-            counter = self._countOfNodes(node.left, counter)
-        return counter
+        try:
+            mainloop()
+        except:
+            bye()
+        bye()
 
     def countOfNodes(self) -> int:
         """count of nodes
@@ -151,7 +127,15 @@ class Tree:
         Returns:
             int: count of nodes
         """
-        return self._countOfNodes(self.root)
+
+        def _countOfNodes(node, counter=0) -> int:
+            if node:
+                counter += 1
+                counter = _countOfNodes(node.right, counter)
+                counter = _countOfNodes(node.left, counter)
+            return counter
+
+        return _countOfNodes(self.root)
 
     def getHeight(self) -> int:
         """get height
@@ -183,21 +167,12 @@ class Tree:
         Returns:
             int: Number of children
         """
-        return self._countOfChild(self.root)
 
-    def _countOfChild(self, node: TreeNode) -> int:
-        """_countOfChild
-            Calculate the number of tree children recursively
-            
-        Args:
-            node (TreeNode): main node
-
-        Returns:
-            int: number of children
-        """
-        if (node == None):
-            return 0;
-        return (1 + self._countOfChild(node.left) + self._countOfChild(node.right))
+        def _countOfChild(node: TreeNode) -> int:
+            if (node == None):
+                return 0;
+            return (1 + _countOfChild(node.left) + _countOfChild(node.right))
+        return _countOfChild(self.root)
 
     def getCountOfLeaf(self) -> int:
         """get count of leaf
@@ -205,24 +180,15 @@ class Tree:
         Returns:
             int: number of leaf
         """
-        return self._countOfLeaf(self.root)
+        def _countOfLeaf(node: TreeNode) -> int:
+            if node is None:
+                return 0
+            if (node.left is None and node.right is None):
+                return 1
+            else:
+                return _countOfLeaf(node.left) + _countOfLeaf(node.right)
 
-    def _countOfLeaf(self, node: TreeNode) -> int:
-        """_countOfLeaf
-            Calculating the number of tree leaves recursively
-
-        Args:
-            node (TreeNode): main node
-
-        Returns:
-            int: number of leaf
-        """
-        if node is None:
-            return 0
-        if (node.left is None and node.right is None):
-            return 1
-        else:
-            return self._countOfLeaf(node.left) + self._countOfLeaf(node.right)
+        return _countOfLeaf(self.root)
 
     def removeAllNodes(self) -> bool:
         """remove all nodes
@@ -232,16 +198,6 @@ class Tree:
         self.data = None
         return True
 
-    def _maximum(self, node: TreeNode, max: int) -> int:
-        if node:
-            if node.value > max:
-                max = node.value
-            if node.right != None:
-                max = self._maximum(node.right, max)
-            else:
-                max = self._maximum(node.left, max)
-        return max
-
     def maximum(self) -> int:
         """maximum
             Calculate maximum number in binary tree
@@ -249,17 +205,17 @@ class Tree:
         Returns:
             int: maximum value
         """
-        return self._maximum(self.root, self.root.value)
 
-    def _minimum(self, node: TreeNode, min: int) -> int:
-        if node:
-            if node.value < min:
-                min = node.value
-            if node.left != None:
-                min = self._minimum(node.left, min)
-            else:
-                min = self._minimum(node.right, min)
-        return min
+        def _maximum(node: TreeNode, max: int) -> int:
+            if node:
+                if node.value > max:
+                    max = node.value
+                if node.right != None:
+                    max = _maximum(node.right, max)
+                else:
+                    max = _maximum(node.left, max)
+            return max
+        return _maximum(self.root, self.root.value)
 
     def minimum(self) -> int:
         """minimum
@@ -268,7 +224,17 @@ class Tree:
         Returns:
             int: minimum value
         """
-        return self._minimum(self.root, self.root.value)
+
+        def _minimum(node: TreeNode, min: int) -> int:
+            if node:
+                if node.value < min:
+                    min = node.value
+                if node.left != None:
+                    min = _minimum(node.left, min)
+                else:
+                    min = _minimum(node.right, min)
+            return min
+        return _minimum(self.root, self.root.value)
 
     def _inOrderTraversal(self, status: int, size: int, node: TreeNode) -> None:
         """_inOrderTraversal
@@ -288,50 +254,6 @@ class Tree:
 
         self._inOrderTraversal(status, 2 * size + 2, node.right);
 
-    def _checkFullTree(self, node: TreeNode) -> bool:
-        """_check
-            Checking the completeness of the tree
-
-        Args:
-            node (TreeNode): main node
-
-        Returns:
-            boolean: Is it complete or not?
-        """
-        queue = list()
-        queue.append(node)
-
-        while queue != []:
-            temp = queue.pop()
-
-            if temp.left == None and temp.right == None:
-                continue
-            elif temp.right != None and temp.left != None:
-                queue.append(temp.right)
-                queue.append(temp.left)
-            else:
-                return False
-        return True
-
-    def _search(self, node: TreeNode, key: int) -> TreeNode:
-        """_search
-            Checking for the existence of this particular value in the tree
-
-        Args:
-            node (TreeNode): node for get value and check with key
-            key (int): desired key
-
-        Returns:
-            TreeNode: The carrier node of the desired value
-        """
-        if node is None or node.value == key:
-            return node
-
-        if node.value > key:
-            return self._search(node.left, key)
-        elif node.value < key:
-            return self._search(node.right, key)
-
     def search(self, key: int) -> TreeNode:
         """search
             Checking for the existence of this particular value in the tree
@@ -342,7 +264,16 @@ class Tree:
         Returns:
             TreeNode: The carrier node of the desired value
         """
-        return self._search(self.root, key)
+
+        def _search(node: TreeNode, key: int) -> TreeNode:
+            if node is None or node.value == key:
+                return node
+
+            if node.value > key:
+                return _search(node.left, key)
+            elif node.value < key:
+                return _search(node.right, key)
+        return _search(self.root, key)
 
     def checkFullTree(self) -> bool:
         """check complete tree
@@ -351,17 +282,34 @@ class Tree:
         Returns:
             boolean: Is it complete or not?
         """
-        return self._checkFullTree(self.root)
 
-    def _isComplete(self, node: TreeNode, index: int, nodeCount: int) -> bool:
-        if node == None:
+        def _checkFullTree(node: TreeNode) -> bool:
+            queue = list()
+            queue.append(node)
+
+            while queue != []:
+                temp = queue.pop()
+
+                if temp.left == None and temp.right == None:
+                    continue
+                elif temp.right != None and temp.left != None:
+                    queue.append(temp.right)
+                    queue.append(temp.left)
+                else:
+                    return False
             return True
-        if index >= nodeCount:
-            return False
-        return self._isComplete(node.left, 2 * index + 1, nodeCount) and self._isComplete(node.right, 2 * index + 2, nodeCount)
+        return _checkFullTree(self.root)
 
     def isComplete(self):
-        return self._isComplete(self.root, 0, self.countOfNodes())
+        def _isComplete(node: TreeNode, index: int, nodeCount: int) -> bool:
+            if node == None:
+                return True
+            if index >= nodeCount:
+                return False
+            return self._isComplete(node.left, 2 * index + 1, nodeCount) and self._isComplete(node.right, 2 * index + 2,
+                                                                                              nodeCount)
+
+        return _isComplete(self.root, 0, self.countOfNodes())
 
     def _compareTwoNode(self, node1: TreeNode, node2: TreeNode) -> bool:
         """_compareTwoNode
@@ -510,7 +458,7 @@ class Tree:
         elif kind == "post order" or kind == "postorder" or kind == "post_order" or kind == 2:
             self._postOrder(self.root)
         elif kind == "in order" or kind == "inorder" or kind == "in_order" or kind == 3:
-            self._inOrderRecursion(self.root) if recursive else self._inOrder()
+            return self._inOrderRecursion(self.root) if recursive else self._inOrder()
         elif kind == "pre order" or kind == "preorder" or kind == "preOrder" or kind == 4:
             self._preOrder(self.root)
         else:

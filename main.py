@@ -42,10 +42,10 @@ def createTree(status: bool) -> Tree:
     # ** first method **
         numbers = []
 
-        print("enter numbers add the tree, enter -1 finish number :)")
+        showResult("Enter values add to the tree, enter -1 finish add :)", sleepTime=0.3)
 
         while True:
-            number = int(input("enter a number -> "))
+            number = int(selectInput("Enter value of node {} -> ".format(len(numbers) + 1)))
             if number == -1:
                 break
             numbers.append(number)
@@ -60,7 +60,7 @@ def createTree(status: bool) -> Tree:
 
         tree = Tree(numbers)
 
-    print("inOrder of new tree -> ", end=" ")
+    showResult("inOrder of new tree ⬇️", sleepTime=0.1)
     tree.traversal("in order")
     print()
     return tree
@@ -109,7 +109,7 @@ def show():
     sleep(0.03)
     print(Fore.LIGHTGREEN_EX + " [14]" + Fore.WHITE + " Add new node")
     sleep(0.03)
-    print(Fore.RED + " [15]" + Fore.WHITE + " exit")
+    print(Fore.RED + " [-1]" + Fore.WHITE + " exit")
     sleep(0.03)  # 0.03s sleep
     try:
         return int(input(Fore.RED + "\n ┌─[" + Fore.GREEN + ">> " + Fore.WHITE + f"Binary Search Tree " + Fore.GREEN + "<<" + Fore.RED + "]\n └──╼ [" + Fore.WHITE + "#" + Fore.RED + "] " + Fore.RESET))
@@ -123,10 +123,10 @@ def selectInput(text=None):
             Fore.RED + "\n ┌─[" + Fore.GREEN + ">> " + Fore.WHITE + f"Binary Search Tree " + Fore.GREEN + "<<" + Fore.RED + "]\n └──╼ [" + Fore.WHITE + "?" + Fore.RED + "] " + Fore.LIGHTYELLOW_EX + text + Fore.GREEN + ">> " + Fore.RESET)
 
 
-def showResult(text=None):
+def showResult(text=None, sleepTime=3, color=Fore.LIGHTGREEN_EX):
     sleep(0.03)  # 0.03s sleep
-    print(Fore.RED + "\n ┌─[" + Fore.GREEN + ">> " + Fore.WHITE + f"Binary Search Tree " + Fore.GREEN + "<<" + Fore.RED + "]\n └──╼ [" + Fore.WHITE + ":)" + Fore.RED + "] " + Fore.LIGHTGREEN_EX + text)
-    sleep(3)
+    print(Fore.RED + "\n ┌─[" + Fore.GREEN + ">> " + Fore.WHITE + f"Binary Search Tree " + Fore.GREEN + "<<" + Fore.RED + "]\n └──╼ [" + Fore.WHITE + ":)" + Fore.RED + "] " + color + text)
+    sleep(sleepTime)
 
 
 def traversal():
@@ -152,14 +152,21 @@ def selection():
                 status = False
             trees.append(createTree(status))
             showResult("create tree successfully!")
-        elif select == 15:
-            showResult("Good Bye")
+        elif select == -1:
+            showResult("Good Bye", sleepTime=0.5)
             exit(-1)
         else:
-            treeNumber = int(selectInput("enter number of tree "))
+            try:
+                treeNumber = int(selectInput("enter number of tree "))
+                if treeNumber > len(trees) - 1:
+                    showResult("Invalid tree number :(", color=Fore.RED)
+                    selection()
+            except:
+                showResult("Wrong Input :( ", color=Fore.RED)
+                selection()
             if select == 2:
                 try:
-                    showResult("Drawing graghical tree")
+                    showResult("Drawing graghical tree", sleepTime=0.5)
                     trees[treeNumber].drawGraphicalTree()
                 except Exception as e:
                     pass
@@ -175,7 +182,10 @@ def selection():
                 trees[treeNumber].removeAllNodes()
                 showResult("Remove all nodes successfully")
             elif select == 8:
-                trees[treeNumber].traversal(traversal())
+                travel = traversal()
+                showResult("Traversal of tree ⬇️", sleepTime=0.1)
+                trees[treeNumber].traversal(travel)
+                print()
                 sleep(5)
             elif select == 9:
                 showResult("tree is full: " + str(trees[treeNumber].checkFullTree()))
@@ -196,7 +206,7 @@ def selection():
                 trees[treeNumber].insert(int(selectInput("enter value of new node ")))
                 showResult("add new node successfully!")
             else:
-                showResult("wrong input")
+                showResult("Wrong Input", color=Fore.RED)
 
 
 def main():
