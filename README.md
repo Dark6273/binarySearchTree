@@ -47,8 +47,8 @@
 ### Install
 To install, you only need to enter the following commands in your terminal
 ```commandline
-git clone https://github.com/Dark6273/binaryTree.git
-cd binaryTree
+git clone https://github.com/Dark6273/binarySearchTree.git
+cd binarySearchTree
 python main.py
 ```
 
