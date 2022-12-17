@@ -109,6 +109,8 @@ def show():
     sleep(0.03)
     print(Fore.LIGHTGREEN_EX + " [14]" + Fore.WHITE + " Add new node")
     sleep(0.03)
+    print(Fore.LIGHTGREEN_EX + " [15]" + Fore.WHITE + " Create copy tree")
+    sleep(0.03)
     print(Fore.RED + " [-1]" + Fore.WHITE + " exit")
     sleep(0.03)  # 0.03s sleep
     try:
@@ -205,6 +207,9 @@ def selection():
             elif select == 14:
                 trees[treeNumber].insert(int(selectInput("enter value of new node ")))
                 showResult("add new node successfully!")
+            elif select == 15:
+                trees.append(trees[treeNumber].copyTree())
+                showResult("Copy tree successfully!")
             else:
                 showResult("Wrong Input", color=Fore.RED)
 

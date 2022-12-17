@@ -445,7 +445,7 @@ class Tree:
             self._preOrder(node.left)
             self._preOrder(node.right)
 
-    def traversal(self, kind: str, recursive: bool = True) -> None:
+    def traversal(self, kind: str or int, recursive: bool = True) -> None:
         """traversal
             There are three common ways to traverse a tree in 
             depth-first order: in-order, pre-order, and post-order. 
@@ -464,4 +464,29 @@ class Tree:
         else:
             print("Unknown type - navigation")
             exit(-1)
+        print()
+
+    def copyTree(self):
+        """copyTree
+            Making a copy of the tree
+
+        Returns:
+            new tree: Tree
+        """
+        copyRoot = TreeNode(self.root.value)
+
+        def copyNodeFunc(mainNode: TreeNode, copyNode: TreeNode):
+            if mainNode.right:
+                copyNode.addRightChild(mainNode.right.value)
+                copyNodeFunc(mainNode.right, copyNode.right)
+            if mainNode.left:
+                copyNode.addLeftChild(mainNode.left.value)
+                copyNodeFunc(mainNode.left, copyNode.left)
+
+        copyNodeFunc(self.root, copyRoot)
+        return Tree(copyRoot)
+
+    def __repr__(self):
+        print("inOrder tree -> ", end=" ")
+        self.traversal(kind=3)
         print()
