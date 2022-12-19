@@ -104,11 +104,11 @@ class Tree:
         """
 
         self.turtle = Turtle()
-        title("Graphical binary tree")
+        title("Graphical binary search tree")
         screen = Screen()
         screen.setup(1024, 700)
         self._jumpTo(0, 250)
-        self.turtle.write("Graphical Binary Tree - Mahdi Khosravi, 40007583 :)", align="center",
+        self.turtle.write("Graphical Binary Search Tree - 40006493, 40007583 :)", align="center",
                           font=('Arial', 17, "bold"))
         self.turtle.speed(0)
         h = self._height(self.root)
@@ -306,7 +306,7 @@ class Tree:
                 return True
             if index >= nodeCount:
                 return False
-            return self._isComplete(node.left, 2 * index + 1, nodeCount) and self._isComplete(node.right, 2 * index + 2,
+            return _isComplete(node.left, 2 * index + 1, nodeCount) and _isComplete(node.right, 2 * index + 2,
                                                                                               nodeCount)
 
         return _isComplete(self.root, 0, self.countOfNodes())
@@ -331,7 +331,7 @@ class Tree:
             return True
         return False
 
-    def compareWithTree(self, tree: TreeNode) -> bool:
+    def compareWithTree(self, tree) -> bool:
         """compare with another tree
 
         Args:
@@ -340,6 +340,9 @@ class Tree:
         Returns:
             boolean: Comparison with another tree
         """
+
+        if self.countOfNodes() != tree.countOfNodes():
+            return False
         return self._compareTwoNode(self.root, tree.root)
 
     def _levelOrder(self) -> None:

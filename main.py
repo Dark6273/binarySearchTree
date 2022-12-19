@@ -156,7 +156,7 @@ def selection():
             showResult("create tree successfully!")
         elif select == -1:
             showResult("Good Bye", sleepTime=0.5)
-            exit(-1)
+            exit(0)
         else:
             try:
                 treeNumber = int(selectInput("enter number of tree "))
