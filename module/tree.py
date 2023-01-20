@@ -172,15 +172,15 @@ class Tree:
             if (node == None):
                 return 0;
             return (1 + _countOfChild(node.left) + _countOfChild(node.right))
-        return _countOfChild(self.root)
+        return _countOfChild(self.root) - 1
 
-    def getCountOfLeaf(self) -> int:
+    def getCountOfLeaf(self, recursive: bool = True) -> int:
         """get count of leaf
 
         Returns:
             int: number of leaf
         """
-        def _countOfLeaf(node: TreeNode) -> int:
+        def _countOfLeafRecursive(node: TreeNode) -> int:
             if node is None:
                 return 0
             if (node.left is None and node.right is None):
@@ -188,6 +188,21 @@ class Tree:
             else:
                 return _countOfLeaf(node.left) + _countOfLeaf(node.right)
 
+        def _countOfLeaf(root: TreeNode) -> int:
+            counter = 0
+            nodes = list()
+            nodes.append(root)
+
+            for node in nodes:
+                if node.right is None and node.left is None:
+                    counter += 1
+                else:
+                    if node.right: nodes.append(node.right)
+                    if node.left: nodes.append(node.left)
+            return counter
+
+        if recursive:
+            return _countOfLeafRecursive(self.root)
         return _countOfLeaf(self.root)
 
     def removeAllNodes(self) -> bool:
@@ -215,6 +230,11 @@ class Tree:
                 else:
                     max = _maximum(node.left, max)
             return max
+
+        def _maximum2(node: TreeNode):
+            if node.right: _maximum2(node.right)
+            return node.value
+
         return _maximum(self.root, self.root.value)
 
     def minimum(self) -> int:
@@ -234,6 +254,11 @@ class Tree:
                 else:
                     min = _minimum(node.right, min)
             return min
+
+        def _minimum2(node: TreeNode):
+            if node.left: _minimum2(node.left)
+            return node.value
+
         return _minimum(self.root, self.root.value)
 
     def _inOrderTraversal(self, status: int, size: int, node: TreeNode) -> None:
@@ -283,21 +308,35 @@ class Tree:
             boolean: Is it complete or not?
         """
 
-        def _checkFullTree(node: TreeNode) -> bool:
-            queue = list()
-            queue.append(node)
+        def _checkFullTree(root: TreeNode) -> bool:
+            nodes = list()
+            nodes.append(root)
 
-            while queue != []:
-                temp = queue.pop()
-
-                if temp.left == None and temp.right == None:
+            for node in nodes:
+                if node.left is None and node.right is None:
                     continue
-                elif temp.right != None and temp.left != None:
-                    queue.append(temp.right)
-                    queue.append(temp.left)
+                elif node.right is not None and node.left is not None:
+                    nodes.append(node.left)
+                    nodes.append(node.right)
                 else:
                     return False
+
             return True
+
+            # queue = list()
+            # queue.append(node)
+            #
+            # while queue != []:
+            #     temp = queue.pop()
+            #
+            #     if temp.left == None and temp.right == None:
+            #         continue
+            #     elif temp.right != None and temp.left != None:
+            #         queue.append(temp.right)
+            #         queue.append(temp.left)
+            #     else:
+            #         return False
+            # return True
         return _checkFullTree(self.root)
 
     def isComplete(self):

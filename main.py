@@ -179,7 +179,8 @@ def selection():
             elif select == 5:
                 showResult("Count of Chiledren: " + str(trees[treeNumber].getCountOfChild()))
             elif select == 6:
-                showResult("Count of leaf: " + str(trees[treeNumber].getCountOfLeaf()))
+                showResult("Count of leaf Recursive: " + str(trees[treeNumber].getCountOfLeaf()))
+                showResult("Count of leaf: " + str(trees[treeNumber].getCountOfLeaf(False)))
             elif select == 7:
                 trees[treeNumber].removeAllNodes()
                 showResult("Remove all nodes successfully")
